@@ -1,8 +1,9 @@
 // ==UserScript==
 // @name        LSS Course show vehicles
-// @version     1.0
+// @version     1.0.2
 // @author      Crazycake
 // @include     /^https?:\/\/(?:w{3}\.)?(?:polizei.)?(?:leitstellenspiel\.de)\/buildings\/\d+$
+// @include     /^https?:\/\/(?:w{3}\.)?(?:polizei.)?(?:leitstellenspiel\.de)\/schoolings\/\d+$
 // @grant       none
 // @UpdateURL   https://github.com/Cr4zyc4k3/LSS/raw/main/LSS_building_notes.user.js
 // ==/UserScript==
@@ -19,198 +20,88 @@
     const aBuildings = JSON.parse(localStorage.aBuildings).value;
 
 
-    //get current building id via url
-    var cur_id = window.location.pathname.split("/")[ 2 ];
-
-    //serach for current building in api data
-    for (let i = 0; i < aBuildings.length; i++)
+    if (window.location.pathname.split("/")[ 1 ] == "buildings" && document.getElementById("schooling") != null)
     {
-        if (aBuildings[ i ].id == cur_id)
+        var building_inputs = document.querySelectorAll("input[id^=education_]");
+        building_inputs.forEach(element =>
         {
-            if (aBuildings[ i ].building_type != 1 && aBuildings[ i ].building_type != 3 && aBuildings[ i ].building_type != 8 && aBuildings[ i ].building_type != 10)
+            element.addEventListener("click", function ()
             {
-                return;
-            }
-            else
-            {
-                var cur_type = aBuildings[ i ].building_type;
-                break;
-            }
-        }
-    }
-    var building_inputs = document.querySelectorAll("input[id^=education_]");
-    building_inputs.forEach(element =>
-    {
-        element.addEventListener("click", function ()
-        {
-            if (element.checked)
-            {
+                const educationArray = [
+                    [ "gw_messtechnik", [ 12 ] ],
+                    [ "gw_gefahrgut", [ 27, 77 ] ],
+                    [ "gw_hoehenrettung", [ 33 ] ],
+                    [ "elw2", [ 34, 78 ] ],
+                    [ "wechsellader", [ 46 ] ],
+                    [ "dekon_p", [ 53, 54 ] ],
+                    [ "fwk", [ 57 ] ],
+                    [ "arff", [ 75 ] ],
+                    [ "rettungstreppe", [ 76 ] ],
+                    [ "werkfeuerwehr", [ 83, 85, 86 ] ],
+                    [ "notarzt", [ 29, 73, 74, 97 ] ],
+                    [ "lna", [ 55 ] ],
+                    [ "orgl", [ 56 ] ],
+                    [ "seg_elw", [ 59 ] ],
+                    [ "seg_gw_san", [ 60 ] ],
+                    [ "gw_wassserrettung", [ 64, 65 ] ],
+                    [ "gw_taucher", [ 63, 69 ] ],
+                    [ "seg_rescue_dogs", [ 91 ] ],
+                    [ "intensive_care", [ 97 ] ],
+                    [ "police_einsatzleiter", [ 35 ] ],
+                    [ "police_fukw", [ 51 ] ],
+                    [ "polzeihubschrauber", [ 61 ] ],
+                    [ "police_wassserwerfer", [ 72 ] ],
+                    [ "police_sek", [ 79, 80 ] ],
+                    [ "police_mek", [ 81, 82 ] ],
+                    [ "k9", [ 94 ] ],
+                    [ "police_motorcycle", [ 95 ] ],
+                    [ "police_firefighting", [ 96 ] ],
+                    [ "thw_zugtrupp", [ 40 ] ],
+                    [ "thw_raumen", [ 42, 45 ] ],
+                    [ "thw_rescue_dogs", [ 93 ] ]
+                ];
 
-                switch (cur_type)
+                if (element.checked)
                 {
-                    case 1:
-                        switch (parseInt(element.value))
-                        {
-                            case 0:
-                                showVehicles(12);
-                                break;
-                            case 1:
-                                showVehicles(27);
-                                break;
-                            case 2:
-                                showVehicles(33);
-                                break;
-                            case 3:
-                                showVehicles(34);
-                                break;
-                            case 4:
-                                showVehicles(46);
-                                break;
-                            case 5:
-                                showVehicles(53);
-                                break;
-                            case 6:
-                                showVehicles(57);
-                                break;
-                            case 7:
-                                showVehicles(64);
-                                break;
-                            case 8:
-                                showVehicles(63);
-                                break;
-                            case 9:
-                                showVehicles(29);
-                                break;
-                            case 10:
-                                showVehicles(75);
-                                break;
-                            case 11:
-                                showVehicles(76);
-                                break;
-                            case 12:
-                                showVehicles(86);
-                                showVehicles(83);
-                                break;
-                            case 13:
-                                showVehicles(97);
-                                break;
-                        }
-                        break;
-                    case 3:
-                        switch (parseInt(element.value))
-                        {
-                            case 0:
-                                showVehicles(29);
-                                break;
-                            case 1:
-                                showVehicles(55);
-                                break;
-                            case 2:
-                                showVehicles(56);
-                                break;
-                            case 3:
-                                showVehicles(59);
-                                break;
-                            case 4:
-                                showVehicles(60);
-                                break;
-                            case 5:
-                                showVehicles(64);
-                                break;
-                            case 6:
-                                showVehicles(63);
-                                break;
-                            case 7:
-                                showVehicles(91);
-                                break;
-                            case 8:
-                                showVehicles(97);
-                                break;
-                        }
+                    for (let a = 0; a < educationArray.length; a++)
+                    {
+                        console.log(educationArray[ a ]);
 
-                        break;
-                    case 8:
-                        switch (parseInt(element.value))
+                        if (element.attributes.education_key.value == educationArray[ a ][ 0 ])
                         {
-                            case 0:
-                                showVehicles(35);
-                                break;
-                            case 1:
-                                showVehicles(51);
-                                break;
-                            case 2:
-                                showVehicles(61);
-                                break;
-                            case 3:
-                                showVehicles(72);
-                                break;
-                            case 4:
-                                showVehicles(79);
-                                showVehicles(80);
-                                break;
-                            case 5:
-                                showVehicles(81);
-                                showVehicles(82);
-                                break;
-                            case 6:
-                                showVehicles(94);
-                                break;
-                            case 7:
-                                showVehicles(95);
-                                break;
-                            case 8:
-                                showVehicles(96);
-                                break;
+                            for (let b = 0; b < educationArray[ a ][ 1 ].length; b++)
+                            {
+                                showVehicles(educationArray[ a ][ 1 ][ b ], element.attributes.value);
+                            }
+                            break;
                         }
-
-
-                        break;
-                    case 10:
-                        switch (parseInt(element.value))
+                        else 
                         {
-                            case 0:
-                                showVehicles(40);
-                                break;
-                            case 1:
-                                showVehicles(42);
-                                showVehicles(44);
-                                break;
-                            case 2:
-                                showVehicles(65);
-                                break;
-                            case 3:
-                                showVehicles(69);
-                                break;
-                            case 4:
-                                showVehicles(93);
-                                break;
+                            cleanUp();
                         }
-                        break;
+                    }
                 }
-            }
-        })
-    });
+            })
+        });
+    }
 
 
 })();
 
 /*  shows vehicles
-*   vehicle_id
+*   @vehicle_id: int
+*   @
 */
-function showVehicles(vehicleId)
+function showVehicles(vehicleId, educationType)
 {
+    cleanUp(educationType);
 
+    sessionStorage.setItem('ccCourseEducation', educationType);
     if (!localStorage.aVehicles || JSON.parse(localStorage.aVehicles).lastUpdate < (new Date().getTime() - 5 * 1000 * 60) || JSON.parse(localStorage.aVehicles).userId != user_id)
     {
         $.getJSON('/api/vehicles').done(data => localStorage.setItem('aVehicles', JSON.stringify({ lastUpdate: new Date().getTime(), value: data, userId: user_id })));
     }
     var aVehicles = JSON.parse(localStorage.aVehicles).value;
-
-    let labels = document.getElementsByClassName("label-info");
-    while (labels[ 0 ] != null)
-    {
-        labels[ 0 ].remove();
-    }
 
     var wachen = document.getElementById("accordion").children;
     for (var i = 0; i < wachen.length; i++)
@@ -219,12 +110,26 @@ function showVehicles(vehicleId)
         {
             if (wachen[ i ].firstElementChild.attributes.building_id.value == aVehicles[ j ].building_id && aVehicles[ j ].vehicle_type == vehicleId)
             {
-
+                console.log("We found" + aVehicles[ j ].caption);
                 let span = document.createElement("span");
                 span.classList.add("label", "label-info");
                 span.innerText = aVehicles[ j ].caption;
                 wachen[ i ].firstElementChild.firstElementChild.appendChild(span);
             }
         }
+    }
+}
+
+//Delets span if a other education is selected
+function cleanUp(educationType)
+{
+    if (sessionStorage.getItem('ccCourseEducation') != educationType && sessionStorage.getItem('ccCourseEducation') != null)
+    {
+        let labels = document.getElementsByClassName("label-info");
+        while (labels[ 0 ] != null)
+        {
+            labels[ 0 ].remove();
+        }
+
     }
 }
