@@ -65,7 +65,6 @@
                 {
                     for (let a = 0; a < educationArray.length; a++)
                     {
-                        console.log(educationArray[ a ]);
 
                         if (element.attributes.education_key.value == educationArray[ a ][ 0 ])
                         {
@@ -110,7 +109,6 @@ function showVehicles(vehicleId, educationType)
         {
             if (wachen[ i ].firstElementChild.attributes.building_id.value == aVehicles[ j ].building_id && aVehicles[ j ].vehicle_type == vehicleId)
             {
-                console.log("We found" + aVehicles[ j ].caption);
                 let span = document.createElement("span");
                 span.classList.add("label", "label-info");
                 span.innerText = aVehicles[ j ].caption;
