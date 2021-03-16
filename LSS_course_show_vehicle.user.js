@@ -12,14 +12,6 @@
 {
     'use strict';
 
-    //Default stuff, getting buldings/vehicles from API
-    if (!localStorage.aBuildings || JSON.parse(localStorage.aBuildings).userId !== user_id || JSON.parse(localStorage.aBuildings).lastUpdate < (new Date().getTime() - 5 * 1000 * 60))
-    {
-        $.getJSON('/api/buildings').done(data => localStorage.setItem('aBuildings', JSON.stringify({ lastUpdate: new Date().getTime(), value: data, userId: user_id })));
-    }
-    const aBuildings = JSON.parse(localStorage.aBuildings).value;
-
-
     if (window.location.pathname.split("/")[ 1 ] == "buildings" && document.getElementById("schooling") != null)
     {
         var building_inputs = document.querySelectorAll("input[id^=education_]");
