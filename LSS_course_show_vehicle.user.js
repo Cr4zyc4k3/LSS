@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        LSS Course show vehicles
-// @version     1.0.5
+// @version     1.0.6
 // @author      Crazycake
 // @include     /^https?:\/\/(?:w{3}\.)?(?:polizei.)?(?:leitstellenspiel\.de)\/schoolings\/\d+$
 // @include     /^https?:\/\/(?:w{3}\.)?(?:polizei.)?(?:leitstellenspiel\.de)\/buildings\/\d+$
