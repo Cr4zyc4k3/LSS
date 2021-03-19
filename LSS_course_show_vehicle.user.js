@@ -1,19 +1,14 @@
 // ==UserScript==
 // @name        LSS Course show vehicles
-// @version     1.0.3
+// @version     1.0.4
 // @author      Crazycake
-// @include     /^https?:\/\/(?:w{3}\.)?(?:polizei.)?(?:leitstellenspiel\.de)\/buildings\/\d+$
 // @include     /^https?:\/\/(?:w{3}\.)?(?:polizei.)?(?:leitstellenspiel\.de)\/schoolings\/\d+$
+// @include     /^https?:\/\/(?:w{3}\.)?(?:polizei.)?(?:leitstellenspiel\.de)\/buildings\/\d+$
 // @grant       none
 // @UpdateURL   https://github.com/Cr4zyc4k3/LSS/raw/main/LSS_building_notes.user.js
 // ==/UserScript==
 
-if (!sessionStorage.aVehicles || JSON.parse(sessionStorage.aVehicles).lastUpdate < (new Date().getTime() - 5 * 1000 * 60) || JSON.parse(sessionStorage.aVehicles).userId != user_id)
-{
-    await $.getJSON('/api/vehicles').done(data => sessionStorage.setItem('aVehicles', JSON.stringify({ lastUpdate: new Date().getTime(), value: data, userId: user_id })));
-}
-var aVehicles = JSON.parse(sessionStorage.aVehicles).value;
-var educationTypeGlobal;
+//education and the vehicles whom need them. de_DE only!
 const educationArray = [
     [ "gw_messtechnik", [ 12 ] ],
     [ "gw_gefahrgut", [ 27, 77 ] ],
@@ -25,7 +20,7 @@ const educationArray = [
     [ "arff", [ 75 ] ],
     [ "rettungstreppe", [ 76 ] ],
     [ "werkfeuerwehr", [ 83, 85, 86 ] ],
-    [ "notarzt", [ 29, 73, 74, 97 ] ],
+    [ "notarzt", [ 29, 31, 73, 74, 97 ] ],
     [ "lna", [ 55 ] ],
     [ "orgl", [ 56 ] ],
     [ "seg_elw", [ 59 ] ],
@@ -47,79 +42,81 @@ const educationArray = [
     [ "thw_raumen", [ 42, 45 ] ],
     [ "thw_rescue_dogs", [ 93 ] ]
 ];
+
 (function ()
 {
+
     'use strict';
 
+    //check whether this is a building and a school
     if (window.location.pathname.split("/")[ 1 ] == "buildings" && document.getElementById("schooling") != null)
     {
-        var building_inputs = document.querySelectorAll("input[id^=education_]");
-        building_inputs.forEach(element =>
+        //get all input education buttons
+        const inputs = document.querySelectorAll("input[id^=education_]");
+        inputs.forEach(element =>
         {
+            //Adding eventlistener to each input
             element.addEventListener("click", function ()
             {
+                //checking whether this input is really checked
                 if (element.checked)
                 {
-                    for (let a = 0; a < educationArray.length; a++)
+                    //delete all existing labels
+                    cleanUp();
+                    let education = element.attributes.education_key.value;
+                    for (let i = 0; i < educationArray.length; i++)
                     {
-
-                        if (element.attributes.education_key.value == educationArray[ a ][ 0 ])
+                        if (education == educationArray[ i ][ 0 ])
                         {
-                            for (let b = 0; b < educationArray[ a ][ 1 ].length; b++)
-                            {
-                                showVehicles(educationArray[ a ][ 1 ][ b ], element.attributes.education_key.value);
-                            }
+                            var educationIDs = educationArray[ i ][ 1 ];
                             break;
                         }
-                        else 
-                        {
-                            cleanUp();
-                            educationTypeGlobal = null;
-                        }
+
                     }
+                    showVehicles(educationIDs);
                 }
+
             })
         });
-    }
 
+    }
+    return;
 
 })();
-
-/*  shows vehicles
-*   @vehicle_id: int
-*   @
-*/
-function showVehicles(vehicleId, educationType)
+function cleanUp()
 {
-    cleanUp(educationTypeGlobal);
-    educationTypeGlobal = educationType;
-
-    var wachen = document.getElementById("accordion").children;
-    for (var i = 0; i < wachen.length; i++)
+    let vehicleLabel = document.querySelectorAll(".label", ".label - success");
+    vehicleLabel.forEach(element =>
     {
-        for (var j = 0; j < aVehicles.length; j++)
+        element.remove();
+    });
+}
+function showVehicles(vehicleIDArray)
+{
+    var buildings = [].slice.call(document.getElementById("accordion").children);
+    if (!sessionStorage.aVehicles || JSON.parse(sessionStorage.aVehicles).lastUpdate < (new Date().getTime() - 5 * 1000 * 60) || JSON.parse(sessionStorage.aVehicles).userId != user_id)
+    {
+        $.getJSON('/api/vehicles').done(data => sessionStorage.setItem('aVehicles', JSON.stringify({ lastUpdate: new Date().getTime(), value: data, userId: user_id })));
+    }
+    var aVehicles = JSON.parse(sessionStorage.aVehicles).value;
+
+    for (let j = 0; j < vehicleIDArray.length; j++)
+    {
+        for (let l = 0; l < buildings.length; l++)
         {
-            if (wachen[ i ].firstElementChild.attributes.building_id.value == aVehicles[ j ].building_id && aVehicles[ j ].vehicle_type == vehicleId)
+            let buildingsChild = buildings[ l ].firstElementChild
+
+            for (let k = 0; k < aVehicles.length; k++)
             {
-                let span = document.createElement("span");
-                span.classList.add("label", "label-info");
-                span.innerText = aVehicles[ j ].caption;
-                wachen[ i ].firstElementChild.firstElementChild.appendChild(span);
+                if (buildingsChild.attributes.building_id.value == aVehicles[ k ].building_id && vehicleIDArray[ j ] == aVehicles[ k ].vehicle_type)
+                {
+                    var span = document.createElement("span");
+                    span.classList.add("label", "label-info");
+                    span.innerText = aVehicles[ k ].caption;
+                    buildingsChild.firstElementChild.appendChild(span);
+                }
             }
         }
     }
-}
 
-//Delets span if a other education is selected
-function cleanUp(educationType)
-{
-    if (educationTypeGlobal != educationType && educationTypeGlobal != null)
-    {
-        let labels = document.getElementsByClassName("label-info");
-        while (labels.length > 0)
-        {
-            labels[ 0 ].remove();
-        }
-
-    }
 }
