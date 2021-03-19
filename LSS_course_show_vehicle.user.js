@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        LSS Course show vehicles
-// @version     1.0.4
+// @version     1.0.5
 // @author      Crazycake
 // @include     /^https?:\/\/(?:w{3}\.)?(?:polizei.)?(?:leitstellenspiel\.de)\/schoolings\/\d+$
 // @include     /^https?:\/\/(?:w{3}\.)?(?:polizei.)?(?:leitstellenspiel\.de)\/buildings\/\d+$
@@ -85,18 +85,18 @@ const educationArray = [
 })();
 function cleanUp()
 {
-    let vehicleLabel = document.querySelectorAll(".label", ".label - success");
+    let vehicleLabel = document.querySelectorAll("[id^=ccShowCourse_");
     vehicleLabel.forEach(element =>
     {
         element.remove();
     });
 }
-function showVehicles(vehicleIDArray)
+async function showVehicles(vehicleIDArray)
 {
     var buildings = [].slice.call(document.getElementById("accordion").children);
     if (!sessionStorage.aVehicles || JSON.parse(sessionStorage.aVehicles).lastUpdate < (new Date().getTime() - 5 * 1000 * 60) || JSON.parse(sessionStorage.aVehicles).userId != user_id)
     {
-        $.getJSON('/api/vehicles').done(data => sessionStorage.setItem('aVehicles', JSON.stringify({ lastUpdate: new Date().getTime(), value: data, userId: user_id })));
+        await $.getJSON('/api/vehicles').done(data => sessionStorage.setItem('aVehicles', JSON.stringify({ lastUpdate: new Date().getTime(), value: data, userId: user_id })));
     }
     var aVehicles = JSON.parse(sessionStorage.aVehicles).value;
 
@@ -111,6 +111,7 @@ function showVehicles(vehicleIDArray)
                 if (buildingsChild.attributes.building_id.value == aVehicles[ k ].building_id && vehicleIDArray[ j ] == aVehicles[ k ].vehicle_type)
                 {
                     var span = document.createElement("span");
+                    span.id = "ccShowCourse_" + aVehicles[ k ].id;
                     span.classList.add("label", "label-info");
                     span.innerText = aVehicles[ k ].caption;
                     buildingsChild.firstElementChild.appendChild(span);
