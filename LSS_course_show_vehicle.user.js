@@ -64,7 +64,7 @@ const educationArrayVB = [
     [ "Intensivpflege", [ 97 ] ],
     [ "Zugführer (leBefKw)", [ 35 ] ],
     [ "Hundertschaftsführer (FüKw)", [ 51 ] ],
-    [ "Polizeihubschrauber ", [ 61 ] ],
+    [ "Polizeihubschrauber", [ 61 ] ],
     [ "Wasserwerfer ", [ 72 ] ],
     [ "SEK", [ 79, 80 ] ],
     [ "MEK", [ 81, 82 ] ],
