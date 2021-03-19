@@ -25,7 +25,7 @@ const educationArray = [
     [ "orgl", [ 56 ] ],
     [ "seg_elw", [ 59 ] ],
     [ "seg_gw_san", [ 60 ] ],
-    [ "gw_wassserrettung", [ 64, 65 ] ],
+    [ "gw_wasserrettung", [ 64, 65 ] ],
     [ "gw_taucher", [ 63, 69 ] ],
     [ "seg_rescue_dogs", [ 91 ] ],
     [ "intensive_care", [ 97 ] ],
