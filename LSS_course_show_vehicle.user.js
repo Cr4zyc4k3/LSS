@@ -60,7 +60,7 @@ const educationArrayVB = [
     [ "SEG - GW-San", [ 60 ] ],
     [ "GW-Wasserrettung Lehrgang", [ 64, 65 ] ],
     [ "GW-Taucher Lehrgang", [ 63, 69 ] ],
-    [ "Rettungshundeführer", [ 91 ] ],
+    [ "Rettungshundeführer (SEG)", [ 91 ] ],
     [ "Intensivpflege", [ 97 ] ],
     [ "Zugführer (leBefKw)", [ 35 ] ],
     [ "Hundertschaftsführer (FüKw)", [ 51 ] ],
