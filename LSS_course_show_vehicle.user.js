@@ -42,6 +42,42 @@ const educationArray = [
     [ "thw_raumen", [ 42, 45 ] ],
     [ "thw_rescue_dogs", [ 93 ] ]
 ];
+const educationArrayVB = [
+    [ "GW-Messtechnik Lehrgang", [ 12 ] ],
+    [ "GW-Gefahrgut Lehrgang", [ 27, 77 ] ],
+    [ "Höhenrettung Lehrgang", [ 33 ] ],
+    [ "ELW 2 Lehrgang", [ 34, 78 ] ],
+    [ "Wechsellader Lehrgang", [ 46 ] ],
+    [ "Dekon-P Lehrgang", [ 53, 54 ] ],
+    [ "Feuerwehrkran Lehrgang", [ 57 ] ],
+    [ "Flugfeldlöschfahrzeug-Ausbildung", [ 75 ] ],
+    [ "Rettungstreppen-Ausbildung", [ 76 ] ],
+    [ "Werkfeuerwehr-Ausbildung", [ 83, 85, 86 ] ],
+    [ "Notarzt-Ausbildung", [ 29, 31, 73, 74, 97 ] ],
+    [ "LNA-Ausbildung", [ 55 ] ],
+    [ "OrgL-Ausbildung", [ 56 ] ],
+    [ "SEG - Einsatzleitung", [ 59 ] ],
+    [ "SEG - GW-San", [ 60 ] ],
+    [ "GW-Wasserrettung Lehrgang", [ 64, 65 ] ],
+    [ "GW-Taucher Lehrgang", [ 63, 69 ] ],
+    [ "Rettungshundeführer", [ 91 ] ],
+    [ "Intensivpflege", [ 97 ] ],
+    [ "Zugführer (leBefKw)", [ 35 ] ],
+    [ "Hundertschaftsführer (FüKw)", [ 51 ] ],
+    [ "Polizeihubschrauber ", [ 61 ] ],
+    [ "Wasserwerfer ", [ 72 ] ],
+    [ "SEK", [ 79, 80 ] ],
+    [ "MEK", [ 81, 82 ] ],
+    [ "Hundeführer (Schutzhund)", [ 94 ] ],
+    [ "Motorradstaffel", [ 95 ] ],
+    [ "Brandbekämpfung", [ 96 ] ],
+    [ "Zugtrupp", [ 40 ] ],
+    [ "Fachgruppe Räumen", [ 42, 45 ] ],
+    [ "Wassergefahren Lehrgang", [ 64, 65 ] ],
+    [ "Bergungstaucher Lehrgang", [ 63, 69 ] ],
+    [ "Rettungshundeführer (THW)", [ 93 ] ]
+];
+
 
 (function ()
 {
@@ -80,9 +116,25 @@ const educationArray = [
         });
 
     }
+    else if (window.location.pathname.split("/")[ 1 ] == "schoolings" && document.getElementById("accordion") != null)
+    {
+        cleanUp();
+        let education = document.getElementsByTagName("h2")[ 0 ].innerHTML;
+        for (let i = 0; i < educationArrayVB.length; i++)
+        {
+            if (education == educationArrayVB[ i ][ 0 ])
+            {
+                var educationIDs = educationArrayVB[ i ][ 1 ];
+                break;
+            }
+
+        }
+        showVehicles(educationIDs);
+    }
     return;
 
 })();
+
 function cleanUp()
 {
     let vehicleLabel = document.querySelectorAll("[id^=ccShowCourse_");
@@ -93,12 +145,19 @@ function cleanUp()
 }
 async function showVehicles(vehicleIDArray)
 {
-    var buildings = [].slice.call(document.getElementById("accordion").children);
-    if (!sessionStorage.aVehicles || JSON.parse(sessionStorage.aVehicles).lastUpdate < (new Date().getTime() - 5 * 1000 * 60) || JSON.parse(sessionStorage.aVehicles).userId != user_id)
+    try
     {
-        await $.getJSON('/api/vehicles').done(data => sessionStorage.setItem('aVehicles', JSON.stringify({ lastUpdate: new Date().getTime(), value: data, userId: user_id })));
+        var buildings = [].slice.call(document.getElementById("accordion").children);
+        if (!sessionStorage.aVehicles || JSON.parse(sessionStorage.aVehicles).lastUpdate < (new Date().getTime() - 5 * 1000 * 60) || JSON.parse(sessionStorage.aVehicles).userId != user_id)
+        {
+            await $.getJSON('/api/vehicles').done(data => sessionStorage.setItem('aVehicles', JSON.stringify({ lastUpdate: new Date().getTime(), value: data, userId: user_id })));
+        }
+        var aVehicles = JSON.parse(sessionStorage.aVehicles).value;
+    } catch (error)
+    {
+        console.error("Cant read Vehicle data");
     }
-    var aVehicles = JSON.parse(sessionStorage.aVehicles).value;
+    var buildings = [].slice.call(document.getElementById("accordion").children);
 
     for (let j = 0; j < vehicleIDArray.length; j++)
     {
