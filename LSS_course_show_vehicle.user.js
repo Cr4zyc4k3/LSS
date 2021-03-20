@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        LSS Course show vehicles
-// @version     1.0.7
+// @version     1.0.8
 // @author      Crazycake
 // @include     /^https?:\/\/(?:w{3}\.)?(?:polizei.)?(?:leitstellenspiel\.de)\/schoolings\/\d+$
 // @include     /^https?:\/\/(?:w{3}\.)?(?:polizei.)?(?:leitstellenspiel\.de)\/buildings\/\d+$
@@ -8,6 +8,7 @@
 // @UpdateURL   https://github.com/Cr4zyc4k3/LSS/raw/main/LSS_building_notes.user.js
 // ==/UserScript==
 
+const disableOptions = false;
 //education and the vehicles whom need them. de_DE only!
 const educationArray = [
     ["gw_messtechnik", [12]],
@@ -83,29 +84,27 @@ var showOnlyExistence;
 (function () {
 
     'use strict';
-   
-    if (localStorage.getItem("ccCourseShow")!=null) {
+
+    if (localStorage.getItem("ccCourseShow") != null) {
         showOnlyExistence = localStorage.getItem("ccCourseShow");
-        
+
     }
-    else{
+    else {
         showOnlyExistence = false;
         localStorage.setItem("ccCourseShow", false);
     }
-    if((document.getElementById("schooling") != null || document.getElementById("accordion") != null)){
-    document.querySelectorAll(".alert", ".alert-info")[0].insertAdjacentHTML("afterend","<div class='alert alert-info' id='ccShowCourseOptionDiv'><input type='checkbox' id='ccShowCourseOptionCheckbox'> Nur Anzeigen, ob Fahrzeug(e) existieren.</div>");
-    document.getElementById("ccShowCourseOptionCheckbox").addEventListener("change", function(){
-        if(document.getElementById("ccShowCourseOptionCheckbox").checked)
-        {
-            showOnlyExistence = true;
-            localStorage.setItem("ccCourseShow", true);
-        }
-        else{
-            showOnlyExistence = false;
-            localStorage.setItem("ccCourseShow", false);
-        }
-    })
-}
+    if ((document.getElementById("schooling") != null || document.getElementById("accordion") != null) && !disableOptions) {
+        document.querySelectorAll(".alert", ".alert-info")[0].insertAdjacentHTML("afterend", "<div class='alert alert-info' id='ccShowCourseOptionDiv'><input type='checkbox' id='ccShowCourseOptionCheckbox'> Nur Anzeigen, ob Fahrzeug(e) existieren.</div>");
+        document.getElementById("ccShowCourseOptionCheckbox").addEventListener("change", function () {
+            if (document.getElementById("ccShowCourseOptionCheckbox").checked) {
+                showOnlyExistence = true;
+            }
+            else {
+                showOnlyExistence = false;
+            }
+            localStorage.setItem("ccCourseShow", showOnlyExistence);
+        })
+    }
 
     //check whether this is a building and a school
     if (window.location.pathname.split("/")[1] == "buildings" && document.getElementById("schooling") != null) {
@@ -184,6 +183,7 @@ async function showVehicles(vehicleIDArray) {
             //3. Loop for all vehicles 
             loop3: for (let k = 0; k < aVehicles.length; k++) {
                 if (buildingsChild.attributes.building_id.value == aVehicles[k].building_id && vehicleIDArray[j] == aVehicles[k].vehicle_type) {
+                    console.log(!showOnlyExistence);
                     if (!showOnlyExistence) {
                         var span = document.createElement("span");
                         span.id = "ccShowCourse_" + aVehicles[k].id;
