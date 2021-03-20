@@ -92,7 +92,7 @@ var showOnlyExistence;
         showOnlyExistence = false;
         localStorage.setItem("ccCourseShow", false);
     }
-    
+    if((document.getElementById("schooling") != null || document.getElementById("accordion") != null)){
     document.querySelectorAll(".alert", ".alert-info")[0].insertAdjacentHTML("afterend","<div class='alert alert-info' id='ccShowCourseOptionDiv'><input type='checkbox' id='ccShowCourseOptionCheckbox'> Nur Anzeigen, ob Fahrzeug(e) existieren.</div>");
     document.getElementById("ccShowCourseOptionCheckbox").addEventListener("change", function(){
         if(document.getElementById("ccShowCourseOptionCheckbox").checked)
@@ -105,6 +105,7 @@ var showOnlyExistence;
             localStorage.setItem("ccCourseShow", false);
         }
     })
+}
 
     //check whether this is a building and a school
     if (window.location.pathname.split("/")[1] == "buildings" && document.getElementById("schooling") != null) {
