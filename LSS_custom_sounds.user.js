@@ -6,22 +6,30 @@
 // @grant       unsafeWindow
 
 // ==/UserScript==
-unsafeWindow.play = function (e) {
+unsafeWindow.play = function (e)
+{
 	var player = document.createElement('audio');
 	player.preload = 'auto';
-	switch (e) {
+	switch (e)
+	{
 		case 'funk':
-			player.src = "http://www.nonstick.com/audio/soundsource/FX/ltfx_086.mp3";
+			player.src = "https://media1.vocaroo.com/mp3/1dccqkEfEFtH";
 			break;
 
 		case 'fms5':
-			player.src = "http://www.nonstick.com/audio/soundsource/FX/ltfx_086.mp3";
+			player.src = "https://www.leitstellenspiel.de/audio/doorbell.mp3";
 			break;
 
-		case 'ring':
-			player.src = "http://www.nonstick.com/audio/soundsource/FX/ltfx_086.mp3";
+		case 'melder':
+			player.src = "https://media1.vocaroo.com/mp3/1nu7awIgCRLP";
 			break;
 
+		case 'chat_message':
+			player.src = "https://media1.vocaroo.com/mp3/1iGwuyClz2eh";
+			break;
+		case 'chat_message_highlight':
+			player.src = "https://media1.vocaroo.com/mp3/13CzOY8JfPmF";
+			break;
 
 		default:
 			break;
