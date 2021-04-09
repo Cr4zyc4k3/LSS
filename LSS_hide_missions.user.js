@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        LSS hide missions
-// @version     1.2
+// @version     1.3.1
 // @author      Crazycake
 // @include     /^https?:\/\/(?:w{3}\.)?(?:(policie\.)?operacni-stredisko\.cz|(politi\.)?alarmcentral-spil\.dk|(polizei\.)?leitstellenspiel\.de|(?:(police\.)?missionchief-australia|(police\.)?missionchief|(poliisi\.)?hatakeskuspeli|missionchief-japan|missionchief-korea|(politiet\.)?nodsentralspillet|(politie\.)?meldkamerspel|operador193|(policia\.)?jogo-operador112|jocdispecerat112|dispecerske-centrum|112-merkez|dyspetcher101-game)\.com|(police\.)?missionchief\.co\.uk|centro-de-mando\.es|centro-de-mando\.mx|(police\.)?operateur112\.fr|(polizia\.)?operatore112\.it|(policja\.)?operatorratunkowy\.pl|dispetcher112\.ru|(polis\.)?larmcentralen-spelet\.se)\/.*$/
 // @grant       none
@@ -56,10 +56,10 @@
 	async function sortList(creditsMin, creditsMax)
 	{
 		//Remove all hides
-		var ownMissions = $('#mission_list').children();
-		var EventMissions = $('#mission_list_alliance_event').children();
-		var allMissions = {};
-		Object.assign(allMissions, ownMissions, EventMissions);
+		var ownMissions = [ ...document.getElementById("mission_list").children ];
+		var EventMissions = [ ...document.getElementById("mission_list_alliance_event").children ];
+		var allMissions = ownMissions.concat(EventMissions);
+		console.log(allMissions);
 		for (let i = 0; i < allMissions.length; i++)
 		{
 			//exclude the "no emergency"
