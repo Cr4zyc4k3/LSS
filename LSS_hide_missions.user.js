@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        LSS hide missions
-// @version     1.1
+// @version     1.2
 // @author      Crazycake
 // @include     /^https?:\/\/(?:w{3}\.)?(?:(policie\.)?operacni-stredisko\.cz|(politi\.)?alarmcentral-spil\.dk|(polizei\.)?leitstellenspiel\.de|(?:(police\.)?missionchief-australia|(police\.)?missionchief|(poliisi\.)?hatakeskuspeli|missionchief-japan|missionchief-korea|(politiet\.)?nodsentralspillet|(politie\.)?meldkamerspel|operador193|(policia\.)?jogo-operador112|jocdispecerat112|dispecerske-centrum|112-merkez|dyspetcher101-game)\.com|(police\.)?missionchief\.co\.uk|centro-de-mando\.es|centro-de-mando\.mx|(police\.)?operateur112\.fr|(polizia\.)?operatore112\.it|(policja\.)?operatorratunkowy\.pl|dispetcher112\.ru|(polis\.)?larmcentralen-spelet\.se)\/.*$/
 // @grant       none
@@ -56,16 +56,19 @@
 	async function sortList(creditsMin, creditsMax)
 	{
 		//Remove all hides
-		var missions = $('#mission_list').children();
-		for (let i = 0; i < missions.length; i++)
+		var ownMissions = $('#mission_list').children();
+		var EventMissions = $('#mission_list_alliance_event').children();
+		var allMissions = {};
+		Object.assign(allMissions, ownMissions, EventMissions);
+		for (let i = 0; i < allMissions.length; i++)
 		{
 			//exclude the "no emergency"
-			if (missions[ i ].id == "emergency_no")
+			if (allMissions[ i ].id == "emergency_no")
 			{
-				missions[ i ].classList.add('hide');
+				allMissions[ i ].classList.add('hide');
 				continue;
 			}
-			missions[ i ].classList.remove('hide');
+			allMissions[ i ].classList.remove('hide');
 
 		}
 		//default request for einsaetze.json
@@ -76,15 +79,15 @@
 		var aMissions = JSON.parse(localStorage.aMissions).value;
 
 
-		for (let i = 0; i < missions.length; i++)
+		for (let i = 0; i < allMissions.length; i++)
 		{	//remove the "no missions-info"
-			if (missions[ i ].attributes.mission_id != null)
+			if (allMissions[ i ].attributes.mission_id != null)
 			{	//compare to missions API
 				for (let j = 0; j < aMissions.length; j++)
 				{	//if avarge_credits < credtisMin hide them
-					if (missions[ i ].attributes.mission_type_id.value == aMissions[ j ].id && (aMissions[ j ].average_credits < creditsMin || aMissions[ j ].average_credits > creditsMax))
+					if (allMissions[ i ].attributes.mission_type_id.value == aMissions[ j ].id && (aMissions[ j ].average_credits < creditsMin || aMissions[ j ].average_credits > creditsMax))
 					{
-						missions[ i ].classList.add('hide');
+						allMissions[ i ].classList.add('hide');
 						//break for faster work
 						break;
 					}
