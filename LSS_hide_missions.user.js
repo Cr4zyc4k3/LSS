@@ -32,8 +32,8 @@
 	//input for custom credit value
 	$('#navbar_profile_link').parent().after(`<li role="presentation">
 												<div style ="padding: 3px 20px;">
-													Ausblenden bis: <input id="ccHideMissionsCreditsMin" type="number" style="width:100px;" placeholder="`+ creditsMin + `">
-													Ausblenden ab: <input id="ccHideMissionsCreditsMax" type="number" style="width:100px;" placeholder="`+ creditsMax + `">
+													Ausblenden bis: <input id="ccHideMissionsCreditsMin" type="number" style="width:100px;olor:black;" placeholder="`+ creditsMin + `">
+													Ausblenden ab: <input id="ccHideMissionsCreditsMax" type="number" style="width:100px;color:black;" placeholder="`+ creditsMax + `">
 												</div>
 											</li>`);
 
@@ -81,7 +81,7 @@
 
 		for (let i = 0; i < allMissions.length; i++)
 		{	//remove the "no missions-info"
-			if (allMissions[ i ].attributes.mission_id != null)
+			if (allMissions[ i ].attributes.mission_id != null && allMissions[ i ].hasAttribute("mission_type_id"))
 			{	//compare to missions API
 				for (let j = 0; j < aMissions.length; j++)
 				{	//if avarge_credits < credtisMin hide them
