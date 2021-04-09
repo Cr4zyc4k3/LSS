@@ -32,7 +32,7 @@
 	//input for custom credit value
 	$('#navbar_profile_link').parent().after(`<li role="presentation">
 												<div style ="padding: 3px 20px;">
-													Ausblenden bis: <input id="ccHideMissionsCreditsMin" type="number" style="width:100px;olor:black;" placeholder="`+ creditsMin + `">
+													Ausblenden bis: <input id="ccHideMissionsCreditsMin" type="number" style="width:100px;color:black;" placeholder="`+ creditsMin + `">
 													Ausblenden ab: <input id="ccHideMissionsCreditsMax" type="number" style="width:100px;color:black;" placeholder="`+ creditsMax + `">
 												</div>
 											</li>`);
