@@ -5,6 +5,7 @@
 // @author       Crazycake
 // @match        https://forum.leitstellenspiel.de/*
 // @grant        none
+// @updateURL   https://github.com/Cr4zyc4k3/LSS/raw/main/Forum_page_bar_above.user.js
 // ==/UserScript==
 
 (function() {
