@@ -1,15 +1,15 @@
 // ==UserScript==
 // @name        LSS Course show vehicles
-// @version     1.0.8b
+// @version     1.0.9
 // @author      Crazycake
-// @include     /^https?:\/\/(?:w{3}\.)?(?:polizei.)?(?:leitstellenspiel\.de)\/schoolings\/\d+$
-// @include     /^https?:\/\/(?:w{3}\.)?(?:polizei.)?(?:leitstellenspiel\.de)\/buildings\/\d+$
+// @include     /^https?:\/\/(?:w{3}\.)?(?:polizei.)?(?:leitstellenspiel\.de)\/(schoolings|buildings)\/\d+$
 // @grant       none
 // @UpdateURL   https://github.com/Cr4zyc4k3/LSS/raw/main/LSS_building_notes.user.js
 // @require     https://raw.githubusercontent.com/pieroxy/lz-string/master/libs/lz-string.min.js
 // ==/UserScript==
 
 const disableOptions = false;
+
 //education and the vehicles whom need them. de_DE only!
 const educationArray = [
     [ "gw_messtechnik", [ 12 ] ],
@@ -42,7 +42,8 @@ const educationArray = [
     [ "police_firefighting", [ 96 ] ],
     [ "thw_zugtrupp", [ 40 ] ],
     [ "thw_raumen", [ 42, 45 ] ],
-    [ "thw_rescue_dogs", [ 93 ] ]
+    [ "thw_rescue_dogs", [ 93 ] ],
+    ["water_damage_pump", [99,100]]
 ];
 const educationArrayVB = [
     [ "GW-Messtechnik Lehrgang", [ 12 ] ],
@@ -77,7 +78,8 @@ const educationArrayVB = [
     [ "Fachgruppe Räumen", [ 42, 45 ] ],
     [ "Wassergefahren Lehrgang", [ 64, 65 ] ],
     [ "Bergungstaucher Lehrgang", [ 63, 69 ] ],
-    [ "Rettungshundeführer (THW)", [ 93 ] ]
+    [ "Rettungshundeführer (THW)", [ 93 ] ],
+    ["Fachgruppe Wasserschaden/Pumpen", [99,100]]
 ];
 var showOnlyExistence;
 
@@ -102,14 +104,7 @@ var showOnlyExistence;
         document.querySelectorAll(".alert", ".alert-info")[ 0 ].insertAdjacentHTML("afterend", "<div class='alert alert-info' id='ccShowCourseOptionDiv'><input type='checkbox' id='ccShowCourseOptionCheckbox'> Nur Anzeigen, ob Fahrzeug(e) existieren.</div>");
         document.getElementById("ccShowCourseOptionCheckbox").addEventListener("change", function ()
         {
-            if (document.getElementById("ccShowCourseOptionCheckbox").checked)
-            {
-                showOnlyExistence = true;
-            }
-            else
-            {
-                showOnlyExistence = false;
-            }
+            showOnlyExistence = document.getElementById("ccShowCourseOptionCheckbox").checked;
             localStorage.setItem("ccCourseShow", showOnlyExistence);
         })
     }
@@ -173,7 +168,7 @@ var showOnlyExistence;
 function cleanUp()
 {
     //get all labels
-    let vehicleLabel = document.querySelectorAll("[id^=ccShowCourse_");
+    let vehicleLabel = document.querySelectorAll("[id^=ccShowCourse_]");
     vehicleLabel.forEach(element =>
     {
         element.remove();
