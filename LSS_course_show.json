@@ -31,7 +31,9 @@
 		["thw_zugtrupp", [40]],
 		["thw_raumen", [42, 45]],
 		["thw_rescue_dogs", [93]],
-		["water_damage_pump", [99,100]]
+		["water_damage_pump", [99,100]],
+		["police_service_group_leader", [103]]
+
 	],
 	"allianceCourse": [
 		["GW-Messtechnik Lehrgang", [12]],
@@ -68,5 +70,6 @@
 		["Bergungstaucher Lehrgang", [63, 69]],
 		["Rettungshundeführer (THW)", [93]],
 		["Fachgruppe Wasserschaden/Pumpen", [99,100]]
+		["Dienstgruppenleitung",[103]]
 	]
 }
