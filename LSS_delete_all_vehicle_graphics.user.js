@@ -18,6 +18,7 @@ async function run() {
         sleep(100);
         console.log("Bild von Fahrzeug "+aVehicles[i].caption+" gelöscht");
     }
+    alert("Alle Fahrzeuggrafiken gelöscht. Du kannst das Skript jetzt löschen.");
 }
 //Copied from: https://www.sitepoint.com/delay-sleep-pause-wait/
 function sleep(milliseconds) {
