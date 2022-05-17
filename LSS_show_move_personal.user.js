@@ -10,6 +10,8 @@
 (function() {
     'use strict';
 
+    alert(`Das Skript ist mittlerweile nativ ins Spiel implementiert! (s. https://forum.leitstellenspiel.de/index.php?thread/19294-skriptwunsch-personalanzeige-personal-verschieben/&postID=450769#post450769) und wird nur noch für didaktische Zwecke zur Verfügung gestellt.`);
+    return;
     if (!sessionStorage.aBuildings || JSON.parse(sessionStorage.aBuildings).userId !== user_id || JSON.parse(sessionStorage.aBuildings).lastUpdate < (new Date().getTime() - 5 * 1000 * 60)) {
         $.getJSON('/api/buildings').done(data => sessionStorage.setItem('aBuildings', JSON.stringify({ lastUpdate: new Date().getTime(), value: data, userId: user_id })));
     }
