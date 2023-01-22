@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        LSS Course show vehicles
-// @version     1.0.9
+// @version     1.0.10
 // @author      Crazycake
 // @include     /^https?:\/\/(?:w{3}\.)?(?:polizei.)?(?:leitstellenspiel\.de)\/(schoolings|buildings)\/\d+$
 // @grant       none
@@ -43,7 +43,10 @@ const educationArray = [
     [ "thw_zugtrupp", [ 40 ] ],
     [ "thw_raumen", [ 42, 45 ] ],
     [ "thw_rescue_dogs", [ 93 ] ],
-    ["water_damage_pump", [99,100]]
+    ["water_damage_pump", [99,100]],
+    ["criminal_investigation", [98]],
+    ["police_service_group_leader", [103]]
+
 ];
 const educationArrayVB = [
     [ "GW-Messtechnik Lehrgang", [ 12 ] ],
@@ -79,7 +82,9 @@ const educationArrayVB = [
     [ "Wassergefahren Lehrgang", [ 64, 65 ] ],
     [ "Bergungstaucher Lehrgang", [ 63, 69 ] ],
     [ "Rettungshundeführer (THW)", [ 93 ] ],
-    ["Fachgruppe Wasserschaden/Pumpen", [99,100]]
+    ["Fachgruppe Wasserschaden/Pumpen", [99,100]],
+    ["Kriminalpolizei", [98]],
+    ["Dienstgruppenleitung", [103]]
 ];
 var showOnlyExistence;
 
