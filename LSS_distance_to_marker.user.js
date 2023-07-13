@@ -17,14 +17,14 @@ let ccDtMLayerGroupMarker = L.layerGroup().addTo(window.map);
 let aBuildings = await callAPI();
 
 async function callAPI() {
-    if (!sessionStorage.aBuildings || JSON.parse(sessionStorage.aBuildings).lastUpdate < (new Date().getTime() - 5 * 1000 * 60) || JSON.parse(sessionStorage.aBuildings).userId !== window.user_id) {
+    if (!sessionStorage.aBuildings || JSON.parse(sessionStorage.aBuildings).lastUpdate < (new Date().getTime() - 5 * 1000 * 60) || JSON.parse(sessionStorage.aBuildings).userId !== user_id) {
         await fetch('/api/buildings')
             .then(data => data.json())
             .then(data => sessionStorage.setItem('aBuildings', JSON.stringify({
-                lastUpdate: new Date().getTime(), value: data, userId: window.user_id
+                lastUpdate: new Date().getTime(), value: data, userId: user_id
             })));
-        return JSON.parse(sessionStorage.getItem("aBuildings")).value;
     }
+    return JSON.parse(sessionStorage.getItem("aBuildings")).value;
 }
 
 
@@ -134,6 +134,8 @@ function toggleVisibility() {
     if (!configDiv.classList.contains("hidden")) {
         document.getElementById("missions_outer").classList.remove("hidden");
         configDiv.classList.add("hidden");
+        ccDtMLayerGroup.clearLayers();
+        ccDtMLayerGroupMarker.clearLayers();
     } else {
         document.getElementById("missions_outer").classList.add("hidden");
         configDiv.classList.remove("hidden");
