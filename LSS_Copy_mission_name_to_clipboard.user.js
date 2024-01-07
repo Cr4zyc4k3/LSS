@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         LSS Copy mission name to clipboard
-// @version      0.1
+// @version      0.2
 // @author       Crazycake
 // @match        https://www.leitstellenspiel.de/missions/*
 // @grant        GM_setClipboard
@@ -9,6 +9,6 @@
 (function() {
     'use strict';
 
-  const copyText = document.getElementById("missionH1").innerText.substring(1);
-  GM_setClipboard(copyText,"text")
+    const missionTitle = document.getElementById("missionH1").childNodes[2].nodeValue.trim();
+    GM_setClipboard(missionTitle, "text");
 })();
