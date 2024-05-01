@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name        LSS Course show vehicles
-// @version     1.0.10
+// @version     1.0.11
 // @author      Crazycake
 // @include     /^https?:\/\/(?:w{3}\.)?(?:polizei.)?(?:leitstellenspiel\.de)\/(schoolings|buildings)\/\d+$
 // @grant       none
-// @UpdateURL   https://github.com/Cr4zyc4k3/LSS/raw/main/LSS_building_notes.user.js
-// @require     https://raw.githubusercontent.com/pieroxy/lz-string/master/libs/lz-string.min.js
+// @UpdateURL   https://github.com/Cr4zyc4k3/LSS/raw/main/LSS_course_show_vehicle.user.js
+// @require     https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js
 // ==/UserScript==
 
 const disableOptions = false;
@@ -15,13 +15,13 @@ const educationArray = [
     [ "gw_messtechnik", [ 12 ] ],
     [ "gw_gefahrgut", [ 27, 77 ] ],
     [ "gw_hoehenrettung", [ 33 ] ],
-    [ "elw2", [ 34, 78 ] ],
+    [ "elw2", [ 34, 78, 129 ] ],
     [ "wechsellader", [ 46 ] ],
     [ "dekon_p", [ 53, 54 ] ],
     [ "fwk", [ 57 ] ],
     [ "arff", [ 75 ] ],
     [ "rettungstreppe", [ 76 ] ],
-    [ "werkfeuerwehr", [ 83, 85, 86 ] ],
+    [ "werkfeuerwehr", [ 83, 84, 85, 86 ] ],
     [ "notarzt", [ 29, 31, 73, 74, 97 ] ],
     [ "lna", [ 55 ] ],
     [ "orgl", [ 56 ] ],
@@ -43,22 +43,32 @@ const educationArray = [
     [ "thw_zugtrupp", [ 40 ] ],
     [ "thw_raumen", [ 42, 45 ] ],
     [ "thw_rescue_dogs", [ 93 ] ],
-    ["water_damage_pump", [99,100]],
-    ["criminal_investigation", [98]],
-    ["police_service_group_leader", [103]]
-
+    [ "water_damage_pump", [100, 123]],
+    [ "criminal_investigation", [98]],
+    [ "police_service_group_leader", [103]],
+    [ "seg_drone",[127]],
+    [ "care_service",[131,130,133]],
+    [ "care_service_equipment",[130,133, 138, 139]],
+    [ "energy_supply", [113]],
+    [ "thw_energy_supply", [112]],
+    [ "fire_drone", [126, 128, 129]],
+    [ "fire_care_service", [138, 139, 140]],
+    [ "police_horse", [134, 135, 137]],
+    [ "heavy_rescue", [109]],
+    [ "thw_drone", [125]],
+    [ "thw_command", [144, 145, 147, 148]]
 ];
 const educationArrayVB = [
     [ "GW-Messtechnik Lehrgang", [ 12 ] ],
     [ "GW-Gefahrgut Lehrgang", [ 27, 77 ] ],
     [ "Höhenrettung Lehrgang", [ 33 ] ],
-    [ "ELW 2 Lehrgang", [ 34, 78 ] ],
+    [ "ELW 2 Lehrgang", [ 34, 78, 129 ] ],
     [ "Wechsellader Lehrgang", [ 46 ] ],
     [ "Dekon-P Lehrgang", [ 53, 54 ] ],
     [ "Feuerwehrkran Lehrgang", [ 57 ] ],
     [ "Flugfeldlöschfahrzeug-Ausbildung", [ 75 ] ],
     [ "Rettungstreppen-Ausbildung", [ 76 ] ],
-    [ "Werkfeuerwehr-Ausbildung", [ 83, 85, 86 ] ],
+    [ "Werkfeuerwehr-Ausbildung", [ 83, 84, 85, 86 ] ],
     [ "Notarzt-Ausbildung", [ 29, 31, 73, 74, 97 ] ],
     [ "LNA-Ausbildung", [ 55 ] ],
     [ "OrgL-Ausbildung", [ 56 ] ],
@@ -82,9 +92,20 @@ const educationArrayVB = [
     [ "Wassergefahren Lehrgang", [ 64, 65 ] ],
     [ "Bergungstaucher Lehrgang", [ 63, 69 ] ],
     [ "Rettungshundeführer (THW)", [ 93 ] ],
-    ["Fachgruppe Wasserschaden/Pumpen", [99,100]],
-    ["Kriminalpolizei", [98]],
-    ["Dienstgruppenleitung", [103]]
+    [ "Fachgruppe Wasserschaden/Pumpen", [100, 123]],
+    [ "Kriminalpolizei", [98]],
+    [ "Dienstgruppenleitung", [103]],
+    [ "SEG Drohne",[127]],
+    [ "Betreuungshelfer", [131,130,133]],
+    [ "Verpflegungshelfer", [130,133, 138, 139]],
+    [ "NEA200 Fortbildung", [113]],
+    [ "Fachgruppe Elektroversorgung", [112]],
+    [ "Drohnen-Schulung", [126, 128, 129]],
+    [ "Feuerwehr-Verpflegungseinheit", [139, 139, 140]],
+    [ "Reiterstaffel", [134, 135, 137]],
+    [ "Fachgruppe Schwere Bergung", [109]],
+    [ "Trupp Unbemannte Luftfahrtsysteme", [125]],
+    [ "Fachzug Führung und Kommunikation", [144, 145, 147, 148]]
 ];
 var showOnlyExistence;
 
