@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        LSS Course show vehicles
-// @version     1.0.11
+// @version     1.0.2
 // @author      Crazycake
 // @include     /^https?:\/\/(?:w{3}\.)?(?:polizei.)?(?:leitstellenspiel\.de)\/(schoolings|buildings)\/\d+$
 // @grant       none
@@ -22,18 +22,18 @@ const educationArray = [
     [ "arff", [ 75 ] ],
     [ "rettungstreppe", [ 76 ] ],
     [ "werkfeuerwehr", [ 83, 84, 85, 86 ] ],
-    [ "notarzt", [ 29, 31, 73, 74, 97 ] ],
+    [ "notarzt", [ 29, 31, 73, 74, 97, 149, 157 ] ],
     [ "lna", [ 55 ] ],
     [ "orgl", [ 56 ] ],
     [ "seg_elw", [ 59 ] ],
     [ "seg_gw_san", [ 60 ] ],
-    [ "gw_wasserrettung", [ 64, 65 ] ],
+    [ "gw_wasserrettung", [ 64, 65, 66, 67, 68, 70, 71 ] ],
     [ "gw_taucher", [ 63, 69 ] ],
-    [ "seg_rescue_dogs", [ 91 ] ],
+    [ "seg_rescue_dogs", [ 91, 153 ] ],
     [ "intensive_care", [ 97 ] ],
     [ "police_einsatzleiter", [ 35 ] ],
     [ "police_fukw", [ 51 ] ],
-    [ "polizeihubschrauber", [ 61 ] ],
+    [ "polizeihubschrauber", [ 61, 156 ] ],
     [ "police_wasserwerfer", [ 72 ] ],
     [ "police_sek", [ 79, 80 ] ],
     [ "police_mek", [ 81, 82 ] ],
@@ -43,7 +43,7 @@ const educationArray = [
     [ "thw_zugtrupp", [ 40 ] ],
     [ "thw_raumen", [ 42, 45 ] ],
     [ "thw_rescue_dogs", [ 93 ] ],
-    [ "water_damage_pump", [100, 123]],
+    [ "water_damage_pump", [100, 101, 102, 123]],
     [ "criminal_investigation", [98]],
     [ "police_service_group_leader", [103]],
     [ "seg_drone",[127]],
@@ -53,10 +53,20 @@ const educationArray = [
     [ "thw_energy_supply", [112]],
     [ "fire_drone", [126, 128, 129]],
     [ "fire_care_service", [138, 139, 140]],
-    [ "police_horse", [134, 135, 137]],
+    [ "police_horse", [134, 135, 136, 137]],
     [ "heavy_rescue", [109]],
     [ "thw_drone", [125]],
-    [ "thw_command", [144, 145, 147, 148]]
+    [ "thw_command", [144, 145, 147, 148]],
+    [ "police_helicopter_lift", [ 156 ]],
+    [ "rescue_helicopter_lift", [ 157 ]],
+    [ "police_speaker_operator", [ 165 ]],
+    [ "railway_fire", [162, 163, 164]],
+    [ "mountain_height_rescue", [155, 158]],
+    [ "mountain_command", [ 151 ]],
+    [ "coastal_rescue", [ 159 ]],
+    [ "coastal_helicopter", [ 161 ]],
+    [ "coastal_helicopter_lift", [ 161 ]],
+    [ "emergency_paramedic_water_rescue", [ 161 ]]
 ];
 const educationArrayVB = [
     [ "GW-Messtechnik Lehrgang", [ 12 ] ],
@@ -69,18 +79,18 @@ const educationArrayVB = [
     [ "Flugfeldlöschfahrzeug-Ausbildung", [ 75 ] ],
     [ "Rettungstreppen-Ausbildung", [ 76 ] ],
     [ "Werkfeuerwehr-Ausbildung", [ 83, 84, 85, 86 ] ],
-    [ "Notarzt-Ausbildung", [ 29, 31, 73, 74, 97 ] ],
+    [ "Notarzt-Ausbildung", [ 29, 31, 73, 74, 97, 149, 157 ] ],
     [ "LNA-Ausbildung", [ 55 ] ],
     [ "OrgL-Ausbildung", [ 56 ] ],
     [ "SEG - Einsatzleitung", [ 59 ] ],
     [ "SEG - GW-San", [ 60 ] ],
-    [ "GW-Wasserrettung Lehrgang", [ 64, 65 ] ],
+    [ "GW-Wasserrettung Lehrgang", [ 64, 65, 66, 67, 68, 70, 71 ] ],
     [ "GW-Taucher Lehrgang", [ 63, 69 ] ],
-    [ "Rettungshundeführer (SEG)", [ 91 ] ],
+    [ "Rettungshundeführer (SEG)", [ 91, 153 ] ],
     [ "Intensivpflege", [ 97 ] ],
     [ "Zugführer (leBefKw)", [ 35 ] ],
     [ "Hundertschaftsführer (FüKw)", [ 51 ] ],
-    [ "Polizeihubschrauber", [ 61 ] ],
+    [ "Polizeihubschrauber", [ 61, 156 ] ],
     [ "Wasserwerfer", [ 72 ] ],
     [ "SEK", [ 79, 80 ] ],
     [ "MEK", [ 81, 82 ] ],
@@ -92,7 +102,7 @@ const educationArrayVB = [
     [ "Wassergefahren Lehrgang", [ 64, 65 ] ],
     [ "Bergungstaucher Lehrgang", [ 63, 69 ] ],
     [ "Rettungshundeführer (THW)", [ 93 ] ],
-    [ "Fachgruppe Wasserschaden/Pumpen", [100, 123]],
+    [ "Fachgruppe Wasserschaden/Pumpen", [100, 101, 102, 123]],
     [ "Kriminalpolizei", [98]],
     [ "Dienstgruppenleitung", [103]],
     [ "SEG Drohne",[127]],
@@ -102,10 +112,20 @@ const educationArrayVB = [
     [ "Fachgruppe Elektroversorgung", [112]],
     [ "Drohnen-Schulung", [126, 128, 129]],
     [ "Feuerwehr-Verpflegungseinheit", [139, 139, 140]],
-    [ "Reiterstaffel", [134, 135, 137]],
+    [ "Reiterstaffel", [134, 135, 136, 137]],
     [ "Fachgruppe Schwere Bergung", [109]],
     [ "Trupp Unbemannte Luftfahrtsysteme", [125]],
-    [ "Fachzug Führung und Kommunikation", [144, 145, 147, 148]]
+    [ "Fachzug Führung und Kommunikation", [144, 145, 147, 148]],
+    [ "Windenoperator", [ 156 ]],
+    [ "Windenoperator", [ 157 ]],
+    [ "Lautsprecheroperator", [ 165 ]],
+    [ "Bahnrettung", [162, 163, 164]],
+    [ "Höhenretter", [155, 158]],
+    [ "Einsatzleiter Bergrettung", [ 151 ]],
+    [ "Seenotretter", [ 159 ]],
+    [ "Hubschrauberpilot (Seenotrettung)", [ 161 ]],
+    [ "Windenoperator", [ 161 ]],
+    [ "Wasserrettungsausbildung für Notfallsanitäter", [ 161 ]]
 ];
 var showOnlyExistence;
 
