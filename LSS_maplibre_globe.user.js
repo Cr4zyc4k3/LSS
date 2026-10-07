@@ -85,7 +85,7 @@
     worldButton.setAttribute('aria-label', worldButton.title);
     worldButton.hidden = true;
     const Control = L.Control.extend({
-        options: { position: 'topright' },
+        options: { position: 'bottomright' },
         onAdd() {
             const container = L.DomUtil.create('div', 'leaflet-bar');
             container.append(button, worldButton);
