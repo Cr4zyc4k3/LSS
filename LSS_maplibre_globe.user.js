@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         LSS MapLibre Globe
 // @namespace    https://github.com/Cr4zyc4k3/LSS
-// @version      1.0.1
+// @version      1.0.2
 // @description  Replace the Leaflet map view with a MapLibre globe, mirroring game markers and routes.
 // @author       Crazycake
 // @match        https://www.leitstellenspiel.de/*
@@ -57,6 +57,7 @@
     styles.textContent = `
         .lss-globe-active > .leaflet-map-pane { visibility: hidden; pointer-events: none; }
         .lss-globe-active .leaflet-control-attribution { display: none; }
+        .lss-globe-active .leaflet-control-zoom { display: none; }
         #lss-globe .lss-globe-marker { width:0; height:0; cursor:pointer; }
         #lss-globe .lss-globe-marker > * { position:relative; left:0; top:0; transform:none; }
         #lss-globe .maplibregl-popup-content { color:#222; max-height:320px; overflow:auto; }
@@ -359,7 +360,7 @@
                 globe.addLayer({ id: 'lss-lines', type: 'line', source: 'lss-paths',
                     paint: { 'line-color': ['get', 'color'], 'line-width': ['get', 'weight'],
                         'line-opacity': ['get', 'opacity'] } });
-                globe.addControl(new maplibregl.NavigationControl(), 'bottom-right');
+                globe.addControl(new maplibregl.NavigationControl(), 'top-left');
                 globe.on('moveend', toLeaflet);
                 for (const type of ['click', 'dblclick', 'contextmenu']) {
                     globe.on(type, event => onMapEvent(type, event));
