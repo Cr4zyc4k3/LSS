@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         LSS MapLibre Globe
 // @namespace    https://github.com/Cr4zyc4k3/LSS
-// @version      1.0.2
+// @version      1.0.3
 // @description  Replace the Leaflet map view with a MapLibre globe, mirroring game markers and routes.
 // @author       Crazycake
 // @match        https://www.leitstellenspiel.de/*
@@ -45,6 +45,7 @@
     let timer;
     let startupTimer;
     let observer;
+    let navigationControl;
     let popup;
     let popupOrigin;
     let geometrySignature = '';
@@ -58,6 +59,9 @@
         .lss-globe-active > .leaflet-map-pane { visibility: hidden; pointer-events: none; }
         .lss-globe-active .leaflet-control-attribution { display: none; }
         .lss-globe-active .leaflet-control-zoom { display: none; }
+        .lss-globe-navigation { display: none; }
+        .lss-globe-active .lss-globe-navigation { display: block; }
+        .leaflet-left .lss-globe-navigation { margin: 10px 0 0 10px; clear: both; }
         #lss-globe .lss-globe-marker { width:0; height:0; cursor:pointer; }
         #lss-globe .lss-globe-marker > * { position:relative; left:0; top:0; transform:none; }
         #lss-globe .maplibregl-popup-content { color:#222; max-height:320px; overflow:auto; }
@@ -315,6 +319,7 @@
         clearInterval(timer);
         clearTimeout(startupTimer);
         observer?.disconnect();
+        navigationControl?.remove();
         leaflet.off('moveend zoomend', fromLeaflet);
         leaflet.off('popupopen', showPopup);
         leaflet.off('popupclose', closePopup);
@@ -360,7 +365,20 @@
                 globe.addLayer({ id: 'lss-lines', type: 'line', source: 'lss-paths',
                     paint: { 'line-color': ['get', 'color'], 'line-width': ['get', 'weight'],
                         'line-opacity': ['get', 'opacity'] } });
-                globe.addControl(new maplibregl.NavigationControl(), 'top-left');
+                // Share Leaflet's control stack instead of overlaying two independent corners.
+                const navigation = new maplibregl.NavigationControl();
+                const Navigation = L.Control.extend({
+                    options: { position: 'topleft' },
+                    onAdd() {
+                        const container = navigation.onAdd(globe);
+                        container.classList.add('lss-globe-navigation');
+                        L.DomEvent.disableClickPropagation(container);
+                        L.DomEvent.disableScrollPropagation(container);
+                        return container;
+                    },
+                    onRemove() { navigation.onRemove(); }
+                });
+                navigationControl = new Navigation().addTo(leaflet);
                 globe.on('moveend', toLeaflet);
                 for (const type of ['click', 'dblclick', 'contextmenu']) {
                     globe.on(type, event => onMapEvent(type, event));
